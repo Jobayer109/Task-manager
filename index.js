@@ -1,5 +1,6 @@
 const express = require("express");
 const dbConnect = require("./Database/connect");
+const errorHandlerMiddleware = require("./middleware/error-handler");
 const tasksRouter = require("./routes/task.routes");
 const app = express();
 require("dotenv").config();
@@ -7,6 +8,7 @@ require("dotenv").config();
 // Middleware
 app.use(express.json());
 app.use(express.static("./public"));
+app.use(errorHandlerMiddleware); // Error handler middleware
 
 // Routes
 app.use("/api/v1/tasks", tasksRouter);
