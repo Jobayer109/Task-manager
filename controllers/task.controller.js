@@ -35,16 +35,28 @@ const getOneTask = async (req, res) => {
   }
 };
 
-// Update task
-const updateTask = (req, res) => {
-  res.send("Task updated");
-};
-
 // Delete task
 const deleteTask = async (req, res) => {
   try {
     const { id: taskID } = req.params;
     const task = await Task.findOneAndDelete({ _id: taskID });
+    if (!task) {
+      return res.status(404).json({ msg: `There is no data of id: ${taskID}` });
+    }
+    res.status(200).json({ task });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+// Update task
+const updateTask = async (req, res) => {
+  try {
+    const { id: taskID } = req.params;
+    const task = await Task.findOne({ _id: taskID }, req.body, {
+      new: true,
+      runValidators: true,
+    });
     if (!task) {
       return res.status(404).json({ msg: `There is no data of id: ${taskID}` });
     }
