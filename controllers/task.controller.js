@@ -19,8 +19,14 @@ const createTask = async (req, res) => {
   }
 };
 
-const getOneTask = (req, res) => {
-  res.send("One task created");
+const getOneTask = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const filteredTask = (await Task.find({})).filter((task) => task.id === id);
+    res.status(200).json({ filteredTask });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };
 
 const updateTask = (req, res) => {
