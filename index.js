@@ -4,11 +4,9 @@ const tasksRouter = require("./routes/task.routes");
 const app = express();
 require("dotenv").config();
 
+// Middleware
 app.use(express.json());
-
-app.get("/", (req, res) => {
-  res.send("Task server is running");
-});
+app.use(express.static("./public"));
 
 // Routes
 app.use("/api/v1/tasks", tasksRouter);
